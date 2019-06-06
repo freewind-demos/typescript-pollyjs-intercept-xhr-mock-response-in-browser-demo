@@ -1,13 +1,15 @@
 import {Polly} from '@pollyjs/core';
-import FetchAdapter from '@pollyjs/adapter-fetch';
+import axios from 'axios';
 
-Polly.register(FetchAdapter);
+const FetchAdapter = require('@pollyjs/adapter-xhr');
+
+Polly.register(FetchAdapter as any);
 
 const url = 'https://jsonplaceholder.typicode.com/posts/404';
 
 function setupServer() {
   const polly = new Polly('Simple Client-Side Server Example', {
-    adapters: ['fetch'], // Hook into `fetch`
+    adapters: ['xhr'], // Hook into `xhr`
     logging: true // Log requests to console
   });
   const {server} = polly;
@@ -18,8 +20,8 @@ function setupServer() {
 }
 
 async function fetchData() {
-  const response = await fetch(url);
-  return await response.json();
+  const response = await axios.get(url);
+  return await response.data;
 }
 
 function setupButton() {
